@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NgopiBelajar</title>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
@@ -8,7 +15,6 @@ body {
     color: #111;
 }
 
-/* ADMIN BUTTON */
 .admin-btn {
     position: fixed;
     top: 15px;
@@ -21,7 +27,6 @@ body {
     border-radius: 6px;
 }
 
-/* CONTAINER */
 .container {
     max-width: 420px;
     margin: auto;
@@ -29,27 +34,10 @@ body {
     text-align: center;
 }
 
-/* CARD (clean, no boxy look) */
 .card {
     padding: 10px 0;
 }
 
-/* TEXT */
-h2 {
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    margin-bottom: 5px;
-}
-
-h3 {
-    margin-bottom: 10px;
-}
-
-p {
-    color: #555;
-}
-
-/* BUTTON (utama) */
 button {
     padding: 12px;
     margin: 10px 0;
@@ -59,53 +47,152 @@ button {
     color: white;
     font-size: 15px;
     border: none;
-    cursor: pointer;
 }
 
-button:hover {
-    background: #333;
-}
-
-/* SECONDARY BUTTON (buat kembali) */
 button.secondary {
     background: none;
     color: #555;
     border: 1px solid #ddd;
 }
 
-/* INPUT */
 input, select {
     padding: 12px;
     width: 100%;
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-top: 10px;
-    font-size: 14px;
-    box-sizing: border-box;
 }
 
-/* SHOT CONTROL */
 .shot-box {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 10px;
+    gap: 10px;
 }
 
-.shot-box button {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-    padding: 0;
-}
-
-/* HIDDEN */
-.hidden {
-    display: none;
-}
-
-small {
-    color: #777;
-}
+.hidden { display: none; }
 </style>
+
+</head>
+
+<body>
+
+<button class="admin-btn" onclick="adminLogin()">Admin</button>
+
+<div class="container">
+
+<div id="landing" class="card">
+    <h2>NgopiBelajar</h2>
+    <p>Kopi sederhana untuk fokus yang luar biasa</p>
+    <button onclick="showMenu()">Pesan</button>
+</div>
+
+<div id="menu" class="hidden card">
+    <p>Aren Latte - 15000</p>
+    <button onclick="selectMenu('Aren Latte',15000)">Pilih</button>
+
+    <p>Caramel Macchiato - 15000</p>
+    <button onclick="selectMenu('Caramel Macchiato',15000)">Pilih</button>
+
+    <button class="secondary" onclick="backLanding()">Kembali</button>
+</div>
+
+<div id="custom" class="hidden card">
+    <p>Gula</p>
+    <select id="gula">
+        <option>Tanpa gula</option>
+        <option>Less</option>
+        <option selected>Normal</option>
+    </select>
+
+    <p>Es</p>
+    <select id="es">
+        <option>Less</option>
+        <option selected>Normal</option>
+    </select>
+
+    <p>Shot</p>
+    <div class="shot-box">
+        <button onclick="kurangShot()">-</button>
+        <span id="shot">1</span>
+        <button onclick="tambahShot()">+</button>
+    </div>
+
+    <button onclick="lanjutNama()">Lanjut</button>
+</div>
+
+<div id="namaPage" class="hidden card">
+    <input id="nama" placeholder="Nama">
+    <button onclick="order()">Order</button>
+</div>
+
+<div id="success" class="hidden card">
+    <p id="ringkasan"></p>
+    <button onclick="resetAll()">Pesan Lagi</button>
+</div>
+
+</div>
+
+<script>
+
+let selectedMenu="", harga=0, shot=1;
+
+function showMenu(){
+document.getElementById("landing").classList.add("hidden");
+document.getElementById("menu").classList.remove("hidden");
+}
+
+function backLanding(){
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("landing").classList.remove("hidden");
+}
+
+function selectMenu(n,h){
+selectedMenu=n; harga=h;
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("custom").classList.remove("hidden");
+}
+
+function tambahShot(){ if(shot<4){shot++;updateShot();}}
+function kurangShot(){ if(shot>1){shot--;updateShot();}}
+
+function updateShot(){
+document.getElementById("shot").innerText=shot;
+}
+
+function lanjutNama(){
+document.getElementById("custom").classList.add("hidden");
+document.getElementById("namaPage").classList.remove("hidden");
+}
+
+function order(){
+let nama=document.getElementById("nama").value;
+if(!nama){alert("Isi nama"); return;}
+
+let gula=document.getElementById("gula").value;
+let es=document.getElementById("es").value;
+
+let total=harga+(shot-1)*5000;
+
+document.getElementById("namaPage").classList.add("hidden");
+document.getElementById("success").classList.remove("hidden");
+
+document.getElementById("ringkasan").innerText=
+nama+" pesan "+selectedMenu+" ("+shot+" shot) Rp"+total;
+}
+
+function resetAll(){
+shot=1;
+document.getElementById("shot").innerText=1;
+document.getElementById("landing").classList.remove("hidden");
+document.getElementById("success").classList.add("hidden");
+}
+
+function adminLogin(){
+let pass=prompt("Password:");
+if(pass==="3273"){alert("Admin OK");}
+}
+
+</script>
+
+</body>
+</html>

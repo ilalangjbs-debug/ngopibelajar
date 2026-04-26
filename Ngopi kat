@@ -1,0 +1,111 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background: #ffffff;
+    color: #111;
+}
+
+/* ADMIN BUTTON */
+.admin-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 12px;
+    padding: 5px 10px;
+    background: none;
+    border: 1px solid #ccc;
+    color: #555;
+    border-radius: 6px;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 420px;
+    margin: auto;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+/* CARD (clean, no boxy look) */
+.card {
+    padding: 10px 0;
+}
+
+/* TEXT */
+h2 {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 5px;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+p {
+    color: #555;
+}
+
+/* BUTTON (utama) */
+button {
+    padding: 12px;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 8px;
+    background: #111;
+    color: white;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #333;
+}
+
+/* SECONDARY BUTTON (buat kembali) */
+button.secondary {
+    background: none;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+/* INPUT */
+input, select {
+    padding: 12px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* SHOT CONTROL */
+.shot-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.shot-box button {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    padding: 0;
+}
+
+/* HIDDEN */
+.hidden {
+    display: none;
+}
+
+small {
+    color: #777;
+}
+</style>

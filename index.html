@@ -38,6 +38,22 @@ body {
     padding: 10px 0;
 }
 
+/* GAMBAR */
+img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* HOVER EFFECT */
+.card div {
+    transition: 0.2s;
+}
+.card div:hover {
+    transform: scale(1.03);
+}
+
 button {
     padding: 12px;
     margin: 10px 0;
@@ -47,6 +63,7 @@ button {
     color: white;
     font-size: 15px;
     border: none;
+    cursor: pointer;
 }
 
 button.secondary {
@@ -67,6 +84,7 @@ input, select {
     display: flex;
     justify-content: center;
     gap: 10px;
+    align-items: center;
 }
 
 .hidden { display: none; }
@@ -80,22 +98,33 @@ input, select {
 
 <div class="container">
 
+<!-- LANDING -->
 <div id="landing" class="card">
-    <h2>NgopiBelajar</h2>
+    <h2>NgopiBelajar ☕</h2>
     <p>Kopi sederhana untuk fokus yang luar biasa</p>
     <button onclick="showMenu()">Pesan</button>
 </div>
 
+<!-- MENU -->
 <div id="menu" class="hidden card">
-    <p>Aren Latte - 15000</p>
-    <button onclick="selectMenu('Aren Latte',15000)">Pilih</button>
 
-    <p>Caramel Macchiato - 15000</p>
-    <button onclick="selectMenu('Caramel Macchiato',15000)">Pilih</button>
-
-    <button class="secondary" onclick="backLanding()">Kembali</button>
+<div onclick="selectMenu('Aren Latte',15000)" style="margin-bottom:20px; cursor:pointer;">
+    <img src="Arenlatte.jpg">
+    <h3>Aren Latte</h3>
+    <p>Rp15.000</p>
 </div>
 
+<div onclick="selectMenu('Caramel Macchiato',15000)" style="cursor:pointer;">
+    <img src="Caramelmachiato.jpg">
+    <h3>Caramel Macchiato</h3>
+    <p>Rp15.000</p>
+</div>
+
+<button class="secondary" onclick="backLanding()">Kembali</button>
+
+</div>
+
+<!-- CUSTOM -->
 <div id="custom" class="hidden card">
     <p>Gula</p>
     <select id="gula">
@@ -116,15 +145,19 @@ input, select {
         <span id="shot">1</span>
         <button onclick="tambahShot()">+</button>
     </div>
+    <small>+5000 / extra shot</small>
 
     <button onclick="lanjutNama()">Lanjut</button>
+    <button class="secondary" onclick="backMenu()">Kembali</button>
 </div>
 
+<!-- NAMA -->
 <div id="namaPage" class="hidden card">
-    <input id="nama" placeholder="Nama">
+    <input id="nama" placeholder="Masukkan nama">
     <button onclick="order()">Order</button>
 </div>
 
+<!-- SUCCESS -->
 <div id="success" class="hidden card">
     <p id="ringkasan"></p>
     <button onclick="resetAll()">Pesan Lagi</button>
@@ -144,6 +177,11 @@ document.getElementById("menu").classList.remove("hidden");
 function backLanding(){
 document.getElementById("menu").classList.add("hidden");
 document.getElementById("landing").classList.remove("hidden");
+}
+
+function backMenu(){
+document.getElementById("custom").classList.add("hidden");
+document.getElementById("menu").classList.remove("hidden");
 }
 
 function selectMenu(n,h){

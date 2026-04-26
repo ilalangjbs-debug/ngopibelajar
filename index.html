@@ -38,7 +38,6 @@ body {
     padding: 10px 0;
 }
 
-/* GAMBAR */
 img {
     width: 100%;
     height: 180px;
@@ -46,7 +45,6 @@ img {
     border-radius: 10px;
 }
 
-/* HOVER EFFECT */
 .card div {
     transition: 0.2s;
 }
@@ -98,14 +96,12 @@ input, select {
 
 <div class="container">
 
-<!-- LANDING -->
 <div id="landing" class="card">
     <h2>NgopiBelajar ☕</h2>
     <p>Kopi sederhana untuk fokus yang luar biasa</p>
     <button onclick="showMenu()">Pesan</button>
 </div>
 
-<!-- MENU -->
 <div id="menu" class="hidden card">
 
 <div onclick="selectMenu('Aren Latte',15000)" style="margin-bottom:20px; cursor:pointer;">
@@ -124,7 +120,6 @@ input, select {
 
 </div>
 
-<!-- CUSTOM -->
 <div id="custom" class="hidden card">
     <p>Gula</p>
     <select id="gula">
@@ -151,13 +146,11 @@ input, select {
     <button class="secondary" onclick="backMenu()">Kembali</button>
 </div>
 
-<!-- NAMA -->
 <div id="namaPage" class="hidden card">
     <input id="nama" placeholder="Masukkan nama">
     <button onclick="order()">Order</button>
 </div>
 
-<!-- SUCCESS -->
 <div id="success" class="hidden card">
     <p id="ringkasan"></p>
     <button onclick="resetAll()">Pesan Lagi</button>
@@ -166,6 +159,8 @@ input, select {
 </div>
 
 <script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtIbH1LnZ7FVc-Cd_QET6_oZj3ej6mhDYpMdnucWjKpF6Htwsz7eexd2KV30MXfIYQgg/exec";
 
 let selectedMenu="", harga=0, shot=1;
 
@@ -202,7 +197,7 @@ document.getElementById("custom").classList.add("hidden");
 document.getElementById("namaPage").classList.remove("hidden");
 }
 
-function order(){
+async function order(){
 let nama=document.getElementById("nama").value;
 if(!nama){alert("Isi nama"); return;}
 
@@ -210,6 +205,27 @@ let gula=document.getElementById("gula").value;
 let es=document.getElementById("es").value;
 
 let total=harga+(shot-1)*5000;
+
+let data = {
+    nama,
+    menu: selectedMenu,
+    gula,
+    es,
+    shot,
+    total
+};
+
+try {
+    await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(data)
+    });
+} catch(err){
+    alert("❌ Gagal kirim ke spreadsheet");
+}
 
 document.getElementById("namaPage").classList.add("hidden");
 document.getElementById("success").classList.remove("hidden");

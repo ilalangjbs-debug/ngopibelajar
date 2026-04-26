@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NgopiBelajar ☕</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f1ee;
+}
+
+/* ADMIN BUTTON */
+.admin-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 420px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+/* BUTTON */
+button {
+    padding: 12px;
+    margin: 8px 0;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: #6b4f4f;
+    color: white;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #5a3f3f;
+}
+
+.hidden { display: none; }
+
+input, select {
+    padding: 10px;
+    width: 90%;
+    margin-top: 10px;
+}
+
+/* SHOT CONTROL */
+.shot-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<button class="admin-btn" onclick="adminLogin()">Admin</button>
+
+<div class="container">
+
+<!-- LANDING -->
+<div id="landing" class="card">
+    <h2>NgopiBelajar ☕📚</h2>
+    <p>Temani belajarmu dengan kopi enak</p>
+    <button onclick="showMenu()">PESAN SEKARANG</button>
+</div>
+
+<!-- MENU -->
+<div id="menu" class="hidden card">
+    <h3>Menu</h3>
+
+    <p><b>Aren Latte</b> - 15000</p>
+    <button onclick="selectMenu('Aren Latte',15000)">Pilih</button>
+
+    <p><b>Caramel Macchiato</b> - 15000</p>
+    <button onclick="selectMenu('Caramel Macchiato',15000)">Pilih</button>
+
+    <button onclick="backLanding()">← Kembali</button>
+</div>
+
+<!-- CUSTOM -->
+<div id="custom" class="hidden card">
+    <h3>Atur Kopimu</h3>
+
+    <p>Gula:</p>
+    <select id="gula">
+        <option>Tanpa gula</option>
+        <option>Less</option>
+        <option selected>Normal</option>
+    </select>
+
+    <p>Es:</p>
+    <select id="es">
+        <option>Less</option>
+        <option selected>Normal</option>
+    </select>
+
+    <p>Espresso:</p>
+    <div class="shot-box">
+        <button onclick="kurangShot()">-</button>
+        <span id="shot">1</span>
+        <button onclick="tambahShot()">+</button>
+    </div>
+    <small>+5000 / extra shot</small>
+
+    <button onclick="lanjutNama()">LANJUTKAN</button>
+    <button onclick="backMenu()">← Kembali</button>
+</div>
+
+<!-- NAMA -->
+<div id="namaPage" class="hidden card">
+    <h3>Nama</h3>
+    <input id="nama" placeholder="Masukkan nama">
+    <button onclick="order()">ORDER</button>
+</div>
+
+<!-- SUCCESS -->
+<div id="success" class="hidden card">
+    <h3>✅ Pesanan Berhasil</h3>
+    <p id="ringkasan"></p>
+    <button onclick="resetAll()">Pesan Lagi</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="hidden card">
+    <h3>Admin Panel</h3>
+    <p>Total Order: <b id="totalOrder">0</b></p>
+    <div id="data"></div>
+</div>
+
+</div>
+
+<script>
+
+let selectedMenu = "";
+let harga = 0;
+let shot = 1;
+
+/* NAVIGATION */
+function showMenu(){
+    landing.classList.add("hidden");
+    menu.classList.remove("hidden");
+}
+
+function backLanding(){
+    menu.classList.add("hidden");
+    landing.classList.remove("hidden");
+}
+
+function backMenu(){
+    custom.classList.add("hidden");
+    menu.classList.remove("hidden");
+}
+
+/* MENU */
+function selectMenu(nama, h){
+    selectedMenu = nama;
+    harga = h;
+    menu.classList.add("hidden");
+    custom.classList.remove("hidden");
+}
+
+/* SHOT */
+function tambahShot(){
+    if(shot < 4){
+        shot++;
+        updateShot();
+    }
+}
+
+function kurangShot(){
+    if(shot > 1){
+        shot--;
+        updateShot();
+    }
+}
+
+function updateShot(){
+    document.getElementById("shot").innerText = shot;
+}
+
+/* NEXT */
+function lanjutNama(){
+    custom.classList.add("hidden");
+    namaPage.classList.remove("hidden");
+}
+
+/* ORDER */
+function order(){
+    let nama = document.getElementById("nama").value.trim();
+    if(nama === ""){
+        alert("Nama wajib diisi!");
+        return;
+    }
+
+    let gula = document.getElementById("gula").value;
+    let es = document.getElementById("es").value;
+
+    let extra = (shot - 1) * 5000;
+    let total = harga + extra;
+
+    let data = JSON.parse(localStorage.getItem("orders") || "[]");
+
+    data.push({
+        nama, menu: selectedMenu, gula, es, shot, total, waktu: new Date().toLocaleTimeString()
+    });
+
+    localStorage.setItem("orders", JSON.stringify(data));
+
+    namaPage.classList.add("hidden");
+    success.classList.remove("hidden");
+
+    document.getElementById("ringkasan").innerText =
+        `${nama} pesan ${selectedMenu} (${shot} shot) - Rp${total}`;
+}
+
+/* RESET (BIAR BISA DIPAKAI BERULANG DI LAPTOP) */
+function resetAll(){
+    selectedMenu = "";
+    harga = 0;
+    shot = 1;
+    document.getElementById("shot").innerText = 1;
+    document.getElementById("nama").value = "";
+
+    success.classList.add("hidden");
+    landing.classList.remove("hidden");
+}
+
+/* ADMIN */
+function adminLogin(){
+    let pass = prompt("Password:");
+    if(pass === "3273"){
+        tampilData();
+        adminPanel.classList.toggle("hidden");
+    } else {
+        alert("Salah!");
+    }
+}
+
+function tampilData(){
+    let data = JSON.parse(localStorage.getItem("orders") || "[]");
+
+    document.getElementById("totalOrder").innerText = data.length;
+
+    let html = "";
+    data.forEach(d => {
+        html += `
+        <p>
+        ${d.waktu} - ${d.nama}<br>
+        ${d.menu} | ${d.gula} | ${d.es} | ${d.shot} shot<br>
+        <b>Rp${d.total}</b>
+        </p><hr>`;
+    });
+
+    document.getElementById("data").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
